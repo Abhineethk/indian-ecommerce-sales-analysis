@@ -25,7 +25,7 @@ This project analyzes e-commerce sales data using SQL and Excel to identify reve
 
 ## Dashboard Preview
 
-![Dashboard](dashboard.png)
+![Dashboard](Dashboard.png)
 
 ## Key Findings
 
