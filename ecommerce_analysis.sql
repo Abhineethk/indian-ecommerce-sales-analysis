@@ -105,5 +105,144 @@ GROUP BY order_status
 ORDER BY total_orders DESC;
 
 -- =====================================
+-- Analysis 6 : Product Category Revenue Contribution
+-- =====================================
+SELECT
+    p.product_category_name,
+    ROUND(SUM(oi.price),2) AS revenue,
+    ROUND(
+        SUM(oi.price) * 100 /
+        (SELECT SUM(price) FROM order_items),
+        2
+    ) AS revenue_percentage
+FROM products p
+JOIN order_items oi
+    ON p.product_id = oi.product_id
+GROUP BY p.product_category_name
+ORDER BY revenue DESC
+LIMIT 10;
+
+-- =====================================
+-- Analysis 7 : State Revenue Contribution
+-- =====================================
+SELECT
+    c.customer_state,
+    ROUND(SUM(oi.price),2) AS revenue,
+    ROUND(
+        SUM(oi.price) * 100 /
+        (SELECT SUM(price) FROM order_items),
+        2
+    ) AS revenue_percentage
+FROM customers c
+JOIN orders o
+    ON c.customer_id = o.customer_id
+JOIN order_items oi
+    ON o.order_id = oi.order_id
+GROUP BY c.customer_state
+ORDER BY revenue DESC;
+
+-- =====================================
+-- Analysis 8 : Monthly Revenue Trend
+-- =====================================
+SELECT
+    DATE_FORMAT(
+        STR_TO_DATE(order_purchase_timestamp,'%d-%m-%Y %H:%i'),
+        '%Y-%m'
+    ) AS month,
+    ROUND(SUM(oi.price),2) AS monthly_revenue
+FROM orders o
+JOIN order_items oi
+    ON o.order_id = oi.order_id
+GROUP BY month
+ORDER BY month;
+
+-- =====================================
+-- Analysis 9 : Average Order Value by State
+-- =====================================
+SELECT
+    c.customer_state,
+    ROUND(AVG(oi.price),2) AS average_order_value
+FROM customers c
+JOIN orders o
+    ON c.customer_id = o.customer_id
+JOIN order_items oi
+    ON o.order_id = oi.order_id
+GROUP BY c.customer_state
+ORDER BY average_order_value DESC;
+
+-- ===========================================================
+-- Indian Business Scenario Mapping
+-- (Brazilian States → Indian States)
+-- ===========================================================
+
+-- SP → Maharashtra
+-- RJ → Tamil Nadu
+-- MG → Delhi
+-- SC → Telangana
+-- CE → Goa
+-- RS → Haryana
+-- PR → Bihar
+-- BA → Assam
+-- TO → Kerala
+-- MA → Karnataka
+-- SE → Punjab
+-- GO → Gujarat
+-- MT → Madhya Pradesh
+-- MS → Odisha
+-- DF → Uttar Pradesh
+-- PE → Rajasthan
+-- PA → West Bengal
+-- PB → Andhra Pradesh
+-- ES → Chhattisgarh
+-- AL → Jharkhand
+-- AM → Uttarakhand
+-- RN → Himachal Pradesh
+-- RO → Jammu & Kashmir
+
+-- =====================================
+-- Analysis 6 : Regional Revenue Analysis
+-- =====================================
+
+SELECT
+    CASE
+
+        WHEN c.customer_state IN ('SP','GO','CE')
+            THEN 'West'
+
+        WHEN c.customer_state IN ('RJ','SC','TO','MA','PB')
+            THEN 'South'
+
+        WHEN c.customer_state IN ('MG','RS','SE','DF','AM','RN','RO','PE')
+            THEN 'North'
+
+        WHEN c.customer_state IN ('PR','MS','BA','PA','AL')
+            THEN 'East'
+
+        WHEN c.customer_state IN ('MT','ES')
+            THEN 'Central'
+
+    END AS region,
+
+    ROUND(SUM(oi.price),2) AS revenue,
+
+    ROUND(
+        SUM(oi.price) * 100 /
+        (SELECT SUM(price) FROM order_items),
+        2
+    ) AS revenue_percentage
+
+FROM customers c
+
+JOIN orders o
+ON c.customer_id = o.customer_id
+
+JOIN order_items oi
+ON o.order_id = oi.order_id
+
+GROUP BY region
+
+ORDER BY revenue DESC;
+
+-- =====================================
 -- End of SQL Analysis
 -- =====================================
