@@ -126,9 +126,9 @@ Business Insights
 
 ## Repository Contents
 
-- ecommerce_analysis.sql
-- Ecommerce_Dashboard.xlsx
-- Ecommerce_Project_Report.pdf
+- indian_ecommerce_sales_analysis.sql
+- Indian_Ecommerce_Sales_Dashboard.xlsx
+- Indian_Ecommerce_Sales_Report.pdf
 - image/Dashboard.png
 - README.md
 
