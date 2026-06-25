@@ -1,29 +1,41 @@
 -- =====================================
--- E-Commerce Sales Analysis Project
+-- Indian E-Commerce Sales Analysis
+-- Business SQL Analysis Queries
 -- =====================================
+/*
+Project : Indian E-Commerce Sales Analysis
+Tools   : MySQL
+Dataset : Public E-Commerce Dataset adapted for an Indian business scenario
+Author  : Abhineeth K
+
+Description:
+This SQL script contains business analysis queries used to generate KPIs,
+sales trends, category performance, regional revenue analysis,
+and order status insights for an Indian E-Commerce Sales Dashboard.
+*/
 
 USE ecommerce_project;
 
 -- =====================================
--- KPI 1: Total Revenue
+-- Dashboard KPI 1: Total Revenue
 -- =====================================
 SELECT ROUND(SUM(price),2) AS total_revenue
 FROM order_items;
 
 -- =====================================
--- KPI 2: Total Orders
+-- Dashboard KPI 2: Total Orders
 -- =====================================
 SELECT COUNT(*) AS total_orders
 FROM orders;
 
 -- =====================================
--- KPI 3: Average Order Value
+-- Dashboard KPI 3: Average Order Value
 -- =====================================
 SELECT ROUND(SUM(price)/COUNT(DISTINCT order_id),2) AS average_order_value
 FROM order_items;
 
 -- =====================================
--- Top Categories by Revenue
+-- Analysis 1 : Top Categories by Revenue
 -- =====================================
 SELECT
     p.product_category_name,
@@ -36,7 +48,7 @@ ORDER BY revenue DESC
 LIMIT 10;
 
 -- =====================================
--- Top Products by Revenue
+-- Analysis 2 : Top Products by Revenue
 -- =====================================
 SELECT
     product_id,
@@ -47,7 +59,7 @@ ORDER BY SUM(price) DESC
 LIMIT 10;
 
 -- =====================================
--- Monthly Order Trend
+-- Analysis 3 : Monthly Order Trend
 -- =====================================
 SELECT
 DATE_FORMAT(
@@ -60,7 +72,7 @@ GROUP BY month
 ORDER BY month;
 
 -- =====================================
--- Regional Revenue Analysis
+-- Analysis 3 : Regional Revenue Analysis
 -- =====================================
 WITH rev AS (
     SELECT
@@ -78,7 +90,7 @@ FROM rev
 ORDER BY revenue DESC;
 
 -- =====================================
--- Order Status Distribution
+-- Analysis 5 : Order Status Distribution
 -- =====================================
 SELECT
     order_status,
@@ -91,3 +103,7 @@ SELECT
 FROM orders
 GROUP BY order_status
 ORDER BY total_orders DESC;
+
+-- =====================================
+-- End of SQL Analysis
+-- =====================================
